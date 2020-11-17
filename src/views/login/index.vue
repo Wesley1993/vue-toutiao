@@ -53,9 +53,9 @@ export default {
   data () {
     return {
       user: {
-        mobile: '', // 手机号
-        code: '', // 验证码
-        agree: false // 是否同意协议的选中状态
+        mobile: '13911111111', // 手机号
+        code: '246810', // 验证码
+        agree: true // 是否同意协议的选中状态
       },
       loginLoading: false, // 登录按钮loading状态
       formRules: {
@@ -111,6 +111,7 @@ export default {
           })
           // close loading
           this.loginLoading = false
+          this.$router.push({ name: 'home' })
         })
         .catch(err => {
           this.$message.error('登录失败')
