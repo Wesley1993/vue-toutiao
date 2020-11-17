@@ -12,3 +12,17 @@ export const login = (data) => {
     data
   })
 }
+
+/**
+ * 获取用户信息
+ */
+export const getUserProfile = () => {
+  return request({
+    method: 'GET',
+    url: 'mp/v1_0/user/profile',
+    headers: {
+      Authorization:
+        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzcwNjA0ODUsInVzZXJfaWQiOjEsInJlZnJlc2giOmZhbHNlLCJ2ZXJpZmllZCI6dHJ1ZX0.sFyS-KRQZQoRxniFVKaHXBqQgKGsgLkWbxNgk_xQo-o'
+    }
+  })
+}

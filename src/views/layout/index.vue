@@ -11,12 +11,8 @@
         </div>
         <el-dropdown :hide-on-click="false" class="my-dropdown">
           <div>
-            <img
-              class="user-icon"
-              src="http://toutiao-img.itheima.net/Fk1yaMbRLt9ntqpsuo0MuV9HAsF2"
-              alt=""
-            />
-            <span class="user-name"> java </span>
+            <img class="user-icon" :src="user.photo" alt="" />
+            <span class="user-name"> {{ user.name }} </span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -32,6 +28,8 @@
 
 <script>
 import AppAside from './components/aside'
+import { getUserProfile } from '@/api/user'
+
 export default {
   name: 'Layout',
   components: {
@@ -39,13 +37,23 @@ export default {
   },
   props: {},
   data () {
-    return {}
+    return {
+      user: {}
+    }
   },
   computed: {},
   watch: {},
-  created () {},
+  created () {
+    this.loadUserProfile()
+  },
   mounted () {},
-  methods: {}
+  methods: {
+    loadUserProfile () {
+      getUserProfile().then(res => {
+        this.user = res.data.data
+      })
+    }
+  }
 }
 </script>
 
