@@ -1,5 +1,5 @@
 <template>
-  <div class="login-contianer">
+  <div class="login-container">
     <!--
       el-form 表单组件
       每个表单项都必须使用el-form-item组件包裹
@@ -130,7 +130,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.login-contianer {
+.login-container {
   position: fixed;
   left: 0;
   right: 0;

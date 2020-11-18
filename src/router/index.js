@@ -30,5 +30,23 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-
+const whiteList = ['/login'] // 路由白名单
+router.beforeEach((to, from, next) => {
+  const user = JSON.parse(window.localStorage.getItem('user'))
+  if (user) {
+    // 判断是否登录
+    if (to.path === '/login') {
+      next('/')
+    } else {
+      next()
+    }
+  } else {
+    if (whiteList.indexOf(to.path) !== -1) {
+      // 判断是否在白名单
+      next()
+    } else {
+      next('/login')
+    }
+  }
+})
 export default router
