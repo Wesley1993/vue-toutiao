@@ -1,12 +1,18 @@
 <template>
   <el-container class="layout-container">
-    <el-aside width="200px" class="aside">
-      <app-aside class="aside-menu" />
+    <el-aside width="auto" class="aside">
+      <app-aside class="aside-menu" :is-collapse="isCollapse" />
     </el-aside>
     <el-container>
       <el-header class="header">
         <div>
-          <i class="el-icon-s-fold icon"></i>
+          <i
+            :class="{
+              'el-icon-s-fold icon': isCollapse,
+              'el-icon-s-unfold icon': !isCollapse,
+            }"
+            @click="isCollapse = !isCollapse"
+          ></i>
           <span class="text">江苏传智播客科技教育有限公司</span>
         </div>
         <el-dropdown :hide-on-click="false" class="my-dropdown">
@@ -21,7 +27,9 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
-      <el-main class="main">Main</el-main>
+      <el-main class="main">
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -38,7 +46,8 @@ export default {
   props: {},
   data () {
     return {
-      user: {}
+      user: {},
+      isCollapse: false
     }
   },
   computed: {},

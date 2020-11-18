@@ -111,6 +111,9 @@ export default {
           })
           // close loading
           this.loginLoading = false
+          // 存储用户数据
+          window.localStorage.setItem('user', JSON.stringify(res.data.data))
+          // 跳转到首页
           this.$router.push({ name: 'home' })
         })
         .catch(err => {
