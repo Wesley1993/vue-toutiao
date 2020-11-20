@@ -9,9 +9,9 @@
         </el-breadcrumb>
       </div>
       <!-- 列表筛选项 -->
-      <el-form :model="article" label-width="80px">
+      <el-form label-width="80px">
         <el-form-item label="状态">
-          <el-radio-group v-model="article.status">
+          <el-radio-group v-model="status">
             <el-radio :label="null">全部</el-radio>
             <el-radio :label="0">草稿</el-radio>
             <el-radio :label="1">待审核</el-radio>
@@ -21,23 +21,29 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道">
-          <el-select v-model="article.channel" placeholder="请选择">
-            <el-option label="前端" value="shanghai"></el-option>
-            <el-option label="IOS" value="beijing"></el-option>
+          <el-select v-model="channelId" placeholder="请选择">
+            <el-option
+              v-for="(item, index) in channels"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="日期">
           <el-date-picker
-            v-model="article.date"
+            v-model="date"
             type="datetimerange"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :default-time="['12:00:00']"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
           >
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">筛选</el-button>
+          <el-button type="primary" @click="loadArticle(page)">筛选</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -88,6 +94,7 @@
               type="danger"
               icon="el-icon-delete"
               circle
+              plain
               @click="onDeleteArticle(scope.row.id)"
             ></el-button>
           </template>
@@ -108,7 +115,7 @@
 </template>
 
 <script>
-import { deleteArticle, getArticles } from '@/api/article'
+import { deleteArticle, getArticles, getArticleChannels } from '@/api/article'
 
 export default {
   name: 'ArticlePage',
@@ -116,11 +123,7 @@ export default {
   props: {},
   data () {
     return {
-      article: {
-        status: 5,
-        region: '',
-        date: ''
-      },
+      channels: [], // 文章频道
       tableData: [],
       totalCount: 0, // 总数
       per_page: 20, // 每页数量
@@ -141,21 +144,41 @@ export default {
           status: 4, text: '已删除', statusTag: 'danger'
         }
       ],
-      loading: true
+      loading: true,
+      status: null, // 状态
+      channelId: null, // 频道
+      date: '', // 日期
+      page: 1 // 当前页面
     }
   },
   computed: {},
   watch: {},
   created () {
-    this.loadAllArticle()
+    this.loadArticleChannels()
+    this.loadArticle()
   },
   mounted () {},
   methods: {
     onSubmit (data) {
       console.log(data)
     },
-    loadAllArticle (page = 1) {
-      getArticles({ page, per_page: this.per_page }).then(res => {
+    // 获取文章频道
+    loadArticleChannels () {
+      getArticleChannels().then(res => {
+        console.log(res)
+        this.channels = res.data.data.channels
+      })
+    },
+    // 加载文章列表
+    loadArticle (page = 1) {
+      getArticles({
+        page,
+        per_page: this.per_page,
+        status: this.status,
+        channel_id: this.channelId,
+        begin_pubdate: this.date ? this.date[0] : null,
+        end_pubdate: this.date ? this.date[1] : null
+      }).then(res => {
         console.log(res)
         const { results, total_count: totalCount } = res.data.data
         this.tableData = res.data.data.results
@@ -163,21 +186,27 @@ export default {
         this.loading = false
       })
     },
+    // 列表页码改变
     onChangePage (page) {
       this.loading = true
-      this.loadAllArticle(page)
+      this.page = page
+      this.loadArticle(page)
     },
-    onDeleteArticle (target) {
-      this.$confirm('确定要删除吗?', '删除文章提示', {
+    // 删除文章
+    onDeleteArticle (articleId) {
+      console.log(articleId)
+      this.$confirm('确认删除吗?', '删除提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteArticle(target)
+        deleteArticle(articleId.toString()).then(res => {
+          this.loadArticle(this.page)
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消退出'
+          message: '已取消删除'
         })
       })
     }
