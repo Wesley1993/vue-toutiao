@@ -62,26 +62,27 @@
         <el-table-column prop="cover" label="封面">
           <template slot-scope="scope">
             <el-image
+              v-if="scope.row.cover.images[0]"
               class="article-cover"
               :src="scope.row.cover.images[0]"
-              v-if="scope.row.cover.images[0]"
             ></el-image>
             <el-image
+              v-else
               class="article-cover"
               src="http://be-toutiao-web.itheima.net/img/error.3f7b1f94.gif"
-              v-else
             ></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="标题"> </el-table-column>
+        <el-table-column prop="title" label="标题"></el-table-column>
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
             <el-tag :type="statusType[scope.row.status].statusTag">{{
-              statusType[scope.row.status].text
-            }}</el-tag>
+                statusType[scope.row.status].text
+              }}
+            </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="pubdate" label="发布时间"> </el-table-column>
+        <el-table-column prop="pubdate" label="发布时间"></el-table-column>
         <el-table-column prop="option" label="操作">
           <template slot-scope="scope">
             <el-button
@@ -126,7 +127,7 @@ export default {
       channels: [], // 文章频道
       tableData: [],
       totalCount: 0, // 总数
-      per_page: 20, // 每页数量
+      per_page: 10, // 每页数量
       statusType: [
         {
           status: 0, text: '草稿', statusTag: 'info'
@@ -145,7 +146,7 @@ export default {
         }
       ],
       loading: true,
-      status: null, // 状态
+      status: null, // 文章状态
       channelId: null, // 频道
       date: '', // 日期
       page: 1 // 当前页面
@@ -157,11 +158,9 @@ export default {
     this.loadArticleChannels()
     this.loadArticle()
   },
-  mounted () {},
+  mounted () {
+  },
   methods: {
-    onSubmit (data) {
-      console.log(data)
-    },
     // 获取文章频道
     loadArticleChannels () {
       getArticleChannels().then(res => {
@@ -181,7 +180,7 @@ export default {
       }).then(res => {
         console.log(res)
         const { results, total_count: totalCount } = res.data.data
-        this.tableData = res.data.data.results
+        this.tableData = results
         this.totalCount = totalCount
         this.loading = false
       })
@@ -201,6 +200,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteArticle(articleId.toString()).then(res => {
+          console.log(res)
           this.loadArticle(this.page)
         })
       }).catch(() => {
@@ -219,11 +219,14 @@ export default {
 .filter-card {
   margin-bottom: 30px;
 }
+
 .pagination {
   margin-top: 20px;
   text-align: right;
 }
+
 .article-cover {
-  width: 60px;
+  width: 150px;
+  height: 100%;
 }
 </style>
