@@ -3,7 +3,10 @@
 */
 import request from '@/utils/request'
 
-// 用户登录
+/**
+ * 用户登录
+ * @param {*} data
+ */
 export const login = (data) => {
   return request({
     method: 'POST',
