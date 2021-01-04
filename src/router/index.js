@@ -1,10 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '@/views/login'
-import Home from '@/views/home'
+
 import Layout from '@/views/layout'
-import Article from '@/views/article'
-import Publish from '@/views/publish'
 
 Vue.use(VueRouter)
 
@@ -13,7 +10,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: Login,
+    component: () => import('@/views/login'),
     meta: {
       title: '登录-黑马头条管理系统'
     }
@@ -26,7 +23,7 @@ const routes = [
       {
         path: '',
         name: 'home',
-        component: Home,
+        component: () => import('@/views/home'),
         meta: {
           title: '黑马头条管理系统'
         }
@@ -34,7 +31,7 @@ const routes = [
       {
         path: '/article',
         name: 'article',
-        component: Article,
+        component: () => import('@/views/article'),
         meta: {
           title: '文章管理-黑马头条管理系统'
         }
@@ -42,7 +39,7 @@ const routes = [
       {
         path: '/publish',
         name: 'publish',
-        component: Publish,
+        component: () => import('@/views/publish'),
         meta: {
           title: '发布文章-黑马头条管理系统'
         }
