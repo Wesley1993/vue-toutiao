@@ -41,3 +41,51 @@ export const deleteArticle = (articleId) => {
     url: `/mp/v1_0/articles/${articleId}`
   })
 }
+
+/**
+ * 新建文章
+ * @param data 文章相关数据
+ * @param draft 是否为草稿
+ * @returns {AxiosPromise}
+ */
+export const addArticle = (data, draft = false) => {
+  return request({
+    method: 'POST',
+    url: '/mp/v1_0/articles',
+    params: {
+      draft // 是否为草稿 true为草稿
+    },
+    data
+  })
+}
+
+/**
+ * 编辑文章
+ * @param articleId
+ * @param data
+ * @param draft
+ * @returns {AxiosPromise}
+ */
+export const updateArticle = (articleId, data, draft = false) => {
+  return request({
+    method: 'PUT',
+    url: `/mp/v1_0/articles/${articleId}`,
+    params: {
+      draft // 是否为草稿 true为草稿
+    }
+  })
+}
+
+/**
+ * 获取文章
+ * @param articleId
+ * @param data
+ * @param draft
+ * @returns {AxiosPromise}
+ */
+export const getArticle = (articleId) => {
+  return request({
+    method: 'GET',
+    url: `/mp/v1_0/articles/${articleId}`
+  })
+}
