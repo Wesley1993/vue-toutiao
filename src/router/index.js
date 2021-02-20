@@ -43,6 +43,38 @@ const routes = [
         meta: {
           title: '发布文章-黑马头条管理系统'
         }
+      },
+      {
+        path: '/image',
+        name: 'image',
+        component: () => import('@/views/image'),
+        meta: {
+          title: '素材管理-黑马头条管理系统'
+        }
+      },
+      {
+        path: '/comment',
+        name: 'comment',
+        component: () => import('@/views/comment'),
+        meta: {
+          title: '评论管理-黑马头条系统'
+        }
+      },
+      {
+        path: '/fans',
+        name: 'fans',
+        component: () => import('@/views/fans'),
+        meta: {
+          title: '粉丝管理-黑马头条系统'
+        }
+      },
+      {
+        path: '/settings',
+        name: 'setting',
+        component: () => import('@/views/setting'),
+        meta: {
+          title: '个人设置-黑马头条系统'
+        }
       }
     ]
   }

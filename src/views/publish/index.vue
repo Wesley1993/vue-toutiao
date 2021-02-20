@@ -14,7 +14,7 @@
         </el-form-item>
         <el-form-item label="内容">
 <!--          <el-input type="textarea" v-model="article.content"></el-input>-->
-          <el-tiptap v-model="article.content" :extensions="extensions" lang="zh" height="400"></el-tiptap>
+          <el-tiptap v-model="article.content" :extensions="extensions" lang="zh" height="400" contenteditable="true" :charCounterCount="false"></el-tiptap>
         </el-form-item>
         <el-form-item label="封面">
           <el-radio-group v-model="article.cover.type">
@@ -92,7 +92,7 @@ export default {
         new Paragraph(),
         new Heading({ level: 5 }),
         new Bold({ bubble: true }), // 在气泡菜单中渲染菜单按钮
-        new Underline({ bubble: true, menubar: false }), // 在气泡菜单而不在菜单栏中渲染菜单按钮
+        new Underline({ bubble: false, menubar: false }), // 在气泡菜单而不在菜单栏中渲染菜单按钮
         new Italic(),
         new Strike(),
         new ListItem(),
